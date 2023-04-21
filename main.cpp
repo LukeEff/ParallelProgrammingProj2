@@ -6,7 +6,7 @@
 #include <omp.h>
 #include "Barrier.h"
 
-// #define CSV
+#define CSV
 
 unsigned int seed = 0;
 
@@ -180,8 +180,8 @@ int main( int argc, char *argv[ ] )
 
     // Setup the barrier
 
-    omp_set_num_threads( 3 );	// or 4
-    barrier.InitBarrier( 3 );		// or 4
+    omp_set_num_threads( 4 );	// or 4
+    barrier.InitBarrier( 4 );		// or 4
 
     // Calculate the curent environmental parameters
     float ang = (  30.*(float)NowMonth + 15.  ) * ( M_PI / 180. );
