@@ -5,6 +5,7 @@
 #include <time.h>
 #include <omp.h>
 
+// Util functions
 float
 Ranf( unsigned int *seedp,  float low, float high )
 {
@@ -13,7 +14,14 @@ Ranf( unsigned int *seedp,  float low, float high )
     return(   low  +  r * ( high - low ) / (float)RAND_MAX   );
 }
 
-// Globals
+float
+Sqr( float x )
+{
+    return x*x;
+}
+
+
+// Global Variables
 unsigned int seed = 0;
 
 int	NowYear;		// 2023 - 2028
@@ -25,7 +33,7 @@ float	NowHeight;		// rye grass height in inches
 int	NowNumRabbits;		// number of rabbits in the current population
 
 
-// Coefficients for global changes over time.
+// Constants
 const float RYEGRASS_GROWS_PER_MONTH =		20.0;
 const float ONE_RABBITS_EATS_PER_MONTH =	 1.0;
 
@@ -57,7 +65,16 @@ void Rabbits()
 
 void RyeGrass()
 {
+    float NextHeight = NowHeight;
+    bool bIsGoodConditions = true;
 
+    float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
+    float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
+
+    if (bIsGoodConditions)
+    {
+        NextHeight += RYEGRASS_GROWS_PER_MONTH;
+    }
 }
 
 void Watcher()
