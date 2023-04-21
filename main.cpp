@@ -124,6 +124,26 @@ void Watcher()
         fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %3.2lf ; Height: %6.2lf ; Rabbits: %6d",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #endif
+
+        NowMonth++;
+
+        if (NowMonth >= 12)
+        {
+            NowMonth = 0;
+            NowYear++;
+        }
+
+        float ang = (  30.*(float)NowMonth + 15.  ) * ( M_PI / 180. );
+
+        float temp = AVG_TEMP - AMP_TEMP * cos( ang );
+        NowTemp = temp + Ranf( &seed, -RANDOM_TEMP, RANDOM_TEMP );
+
+        float precip = AVG_PRECIP_PER_MONTH + AMP_PRECIP_PER_MONTH * sin( ang );
+        NowPrecip = precip + Ranf( &seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
+        if( NowPrecip < 0. )
+            NowPrecip = 0.;
+
+
         // DonePrinting barrier:
         barrier.WaitBarrier();
     }
