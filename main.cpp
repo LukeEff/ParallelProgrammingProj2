@@ -50,22 +50,21 @@ const float MIDPRECIP =				14.0;
 
 void Rabbits()
 {
-    int NextNumRabbits = NowNumRabbits;
-    float CarryingCapacity = NowHeight;
+    int nextNumRabbits = NowNumRabbits;
+    int carryingCapacity = (int)( NowHeight );
+    if( nextNumRabbits < carryingCapacity )
+        nextNumRabbits++;
+    else
+    if( nextNumRabbits > carryingCapacity )
+        nextNumRabbits--;
 
-    if (NowNumRabbits > CarryingCapacity)
-    {
-        NextNumRabbits--;
-    }
-    else if (NowNumRabbits < CarryingCapacity)
-    {
-        NextNumRabbits += 2;
-    }
+    if( nextNumRabbits < 0 )
+        nextNumRabbits = 0;
 }
 
 void RyeGrass()
 {
-    float NextHeight = NowHeight;
+    float nextHeight = NowHeight;
 
     float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
     float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
