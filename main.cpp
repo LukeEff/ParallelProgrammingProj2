@@ -30,6 +30,25 @@ const float RANDOM_TEMP =			10.0;	// plus or minus noise
 const float MIDTEMP =				60.0;
 const float MIDPRECIP =				14.0;
 
+void Rabbits()
+{
+
+}
+
+void RyeGrass()
+{
+
+}
+
+void Watcher()
+{
+
+}
+
+void MyAgent()
+{
+
+}
 
 int main( int argc, char *argv[ ] )
 {
