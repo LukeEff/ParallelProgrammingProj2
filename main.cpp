@@ -47,40 +47,61 @@ const float RANDOM_TEMP =			10.0;	// plus or minus noise
 
 const float MIDTEMP =				60.0;
 const float MIDPRECIP =				14.0;
+const int START_YEAR = 2023;
+const int TRIAL_DURATION_YEARS = 5;
 
 void Rabbits()
 {
-    int nextNumRabbits = NowNumRabbits;
-    int carryingCapacity = (int)( NowHeight );
-    if( nextNumRabbits < carryingCapacity )
-        nextNumRabbits++;
-    else
-    if( nextNumRabbits > carryingCapacity )
-        nextNumRabbits--;
+    while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
+    {
+        int nextNumRabbits = NowNumRabbits;
+        int carryingCapacity = (int) (NowHeight);
+        if (nextNumRabbits < carryingCapacity)
+            nextNumRabbits++;
+        else if (nextNumRabbits > carryingCapacity)
+            nextNumRabbits--;
 
-    if( nextNumRabbits < 0 )
-        nextNumRabbits = 0;
+        if (nextNumRabbits < 0)
+            nextNumRabbits = 0;
+        
+        // DoneComputing barrier;
+        WaitBarrier( );
+    }
 }
 
 void RyeGrass()
 {
-    float nextHeight = NowHeight;
+    while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
+    {
+        float nextHeight = NowHeight;
 
-    float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
-    float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
+        float tempFactor = exp(-Sqr((NowTemp - MIDTEMP) / 10.));
+        float precipFactor = exp(-Sqr((NowPrecip - MIDPRECIP) / 10.));
 
-    nextHeight += tempFactor * precipFactor * RYEGRASS_GROWS_PER_MONTH;
-    nextHeight -= (float)NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
+        nextHeight += tempFactor * precipFactor * RYEGRASS_GROWS_PER_MONTH;
+        nextHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
+
+        // DoneComputing barrier;
+        WaitBarrier( );
+    }
 }
 
 void Watcher()
 {
-
+    while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
+    {
+        // DoneComputing barrier;
+        WaitBarrier( );
+    }
 }
 
 void MyAgent()
 {
-
+    while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
+    {
+        // DoneComputing barrier;
+        WaitBarrier( );
+    }
 }
 
 int main( int argc, char *argv[ ] )
@@ -93,7 +114,7 @@ int main( int argc, char *argv[ ] )
 #endif
     // Setup the now global variables
     NowMonth =    0;
-    NowYear  = 2023;
+    NowYear  = START_YEAR;
     NowNumRabbits = 1;
     NowHeight =  5.;
 
