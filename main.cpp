@@ -6,6 +6,11 @@
 #include <omp.h>
 #include "Barrier.h"
 
+// #define CSV
+
+unsigned int seed = 0;
+
+
 // Util functions
 float
 Ranf( unsigned int *seedp,  float low, float high )
@@ -23,8 +28,6 @@ Sqr( float x )
 
 
 // Global Variables
-unsigned int seed = 0;
-
 int	NowYear;		// 2023 - 2028
 int	NowMonth;		// 0 - 11
 
@@ -66,8 +69,16 @@ void Rabbits()
         if (nextNumRabbits < 0)
             nextNumRabbits = 0;
 
-        // DoneComputing barrier;
+        // DoneComputing barrier:
         barrier.WaitBarrier( );
+
+        NowNumRabbits = nextNumRabbits;
+
+        // DoneAssigning barrier:
+        barrier.WaitBarrier();
+
+        // DonePrinting barrier:
+        barrier.WaitBarrier();
     }
 }
 
@@ -83,8 +94,16 @@ void RyeGrass()
         nextHeight += tempFactor * precipFactor * RYEGRASS_GROWS_PER_MONTH;
         nextHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
 
-        // DoneComputing barrier;
+        // DoneComputing barrier:
         barrier.WaitBarrier( );
+
+        NowHeight = nextHeight;
+
+        // DoneAssigning barrier:
+        barrier.WaitBarrier();
+
+        // DonePrinting barrier:
+        barrier.WaitBarrier();
     }
 }
 
@@ -92,8 +111,21 @@ void Watcher()
 {
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
-        // DoneComputing barrier;
+        // DoneComputing barrier:
         barrier.WaitBarrier( );
+
+        // DoneAssigning barrier:
+        barrier.WaitBarrier();
+
+#ifdef CSV
+        fprintf(stderr, "%4d , %2d , %6.2lf , %3.2lf ,  %6.2lf , %6d",
+                NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
+#else
+        fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %3.2lf ; Height: %6.2lf ; Rabbits: %6d",
+                NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
+#endif
+        // DonePrinting barrier:
+        barrier.WaitBarrier();
     }
 }
 
@@ -101,7 +133,13 @@ void MyAgent()
 {
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
-        // DoneComputing barrier;
+        // DoneComputing barrier:
+        barrier.WaitBarrier();
+
+        // DoneAssigning barrier:
+        barrier.WaitBarrier();
+
+        // DonePrinting barrier:
         barrier.WaitBarrier();
     }
 }
