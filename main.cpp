@@ -6,6 +6,8 @@
 #include <omp.h>
 
 // Globals
+unsigned int seed = 0;
+
 int	NowYear;		// 2023 - 2028
 int	NowMonth;		// 0 - 11
 
@@ -58,6 +60,22 @@ int main( int argc, char *argv[ ] )
     fprintf( stderr, "No OpenMP support!\n" );
     return 1;
 #endif
+    // Setup the now global variables
+    NowMonth =    0;
+    NowYear  = 2023;
+    NowNumRabbits = 1;
+    NowHeight =  5.;
+
+    // Calculate the curent environmental parameters
+    float ang = (  30.*(float)NowMonth + 15.  ) * ( M_PI / 180. );
+
+    float temp = AVG_TEMP - AMP_TEMP * cos( ang );
+    NowTemp = temp + Ranf( &seed, -RANDOM_TEMP, RANDOM_TEMP );
+
+    float precip = AVG_PRECIP_PER_MONTH + AMP_PRECIP_PER_MONTH * sin( ang );
+    NowPrecip = precip + Ranf( &seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
+    if( NowPrecip < 0. )
+        NowPrecip = 0.;
 
     omp_set_num_threads( 4 );	// same as # of sections
 #pragma omp parallel sections
