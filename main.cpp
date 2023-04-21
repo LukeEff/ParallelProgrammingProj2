@@ -88,11 +88,13 @@ void RyeGrass()
     {
         float nextHeight = NowHeight;
 
-        float tempFactor = exp(-Sqr((NowTemp - MIDTEMP) / 10.));
-        float precipFactor = exp(-Sqr((NowPrecip - MIDPRECIP) / 10.));
+        float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
+        float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
 
         nextHeight += tempFactor * precipFactor * RYEGRASS_GROWS_PER_MONTH;
         nextHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
+
+        if( nextHeight < 0. ) nextHeight = 0.;
 
         // DoneComputing barrier:
         barrier.WaitBarrier( );
@@ -118,8 +120,11 @@ void Watcher()
         barrier.WaitBarrier();
 
 #ifdef CSV
-        fprintf(stderr, "%4d , %2d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
-                NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
+        int totalMonths = ((NowYear - START_YEAR) * 12) + NowMonth;
+        fprintf(stderr, "%4d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
+                totalMonths, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
+        //fprintf(stderr, "%4d , %2d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
+        //        NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #else
         fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Height: %6.2lf ; Rabbits: %3d\n",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
