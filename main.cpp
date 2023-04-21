@@ -118,10 +118,10 @@ void Watcher()
         barrier.WaitBarrier();
 
 #ifdef CSV
-        fprintf(stderr, "%4d , %2ld , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
+        fprintf(stderr, "%4d , %2d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #else
-        fprintf(stderr, "Year: %4d ; Month: %2ld ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Height: %6.2lf ; Rabbits: %3d\n",
+        fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Height: %6.2lf ; Rabbits: %3d\n",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #endif
 
