@@ -42,7 +42,17 @@ const float MIDPRECIP =				14.0;
 
 void Rabbits()
 {
+    int NextNumRabbits = NowNumRabbits;
+    float CarryingCapacity = NowHeight;
 
+    if (NowNumRabbits > CarryingCapacity)
+    {
+        NextNumRabbits--;
+    }
+    else if (NowNumRabbits < CarryingCapacity)
+    {
+        NextNumRabbits += 2;
+    }
 }
 
 void RyeGrass()
