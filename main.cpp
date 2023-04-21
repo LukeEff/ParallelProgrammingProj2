@@ -39,4 +39,28 @@ int main( int argc, char *argv[ ] )
     fprintf( stderr, "No OpenMP support!\n" );
     return 1;
 #endif
+
+    omp_set_num_threads( 4 );	// same as # of sections
+#pragma omp parallel sections
+    {
+#pragma omp section
+        {
+            Rabbits( );
+        }
+
+#pragma omp section
+        {
+            RyeGrass( );
+        }
+
+#pragma omp section
+        {
+            Watcher( );
+        }
+
+#pragma omp section
+        {
+            MyAgent( );	// your own
+        }
+    }
 }
