@@ -66,15 +66,12 @@ void Rabbits()
 void RyeGrass()
 {
     float NextHeight = NowHeight;
-    bool bIsGoodConditions = true;
 
     float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
     float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
 
-    if (bIsGoodConditions)
-    {
-        NextHeight += RYEGRASS_GROWS_PER_MONTH;
-    }
+    nextHeight += tempFactor * precipFactor * RYEGRASS_GROWS_PER_MONTH;
+    nextHeight -= (float)NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
 }
 
 void Watcher()
