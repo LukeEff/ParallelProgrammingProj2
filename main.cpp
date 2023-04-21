@@ -53,7 +53,7 @@ const float RANDOM_TEMP =			10.0;	// plus or minus noise
 const float MIDTEMP =				60.0;
 const float MIDPRECIP =				14.0;
 const int START_YEAR = 2023;
-const int TRIAL_DURATION_YEARS = 5;
+const int TRIAL_DURATION_YEARS = 6;
 
 void Rabbits()
 {
@@ -118,10 +118,10 @@ void Watcher()
         barrier.WaitBarrier();
 
 #ifdef CSV
-        fprintf(stderr, "%4d , %2d , %6.2lf , %3.2lf ,  %6.2lf , %6d\n",
+        fprintf(stderr, "%4d , %2ld , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #else
-        fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %3.2lf ; Height: %6.2lf ; Rabbits: %6d\n",
+        fprintf(stderr, "Year: %4d ; Month: %2ld ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Height: %6.2lf ; Rabbits: %3d\n",
                 NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #endif
 
