@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <omp.h>
+#include "Barrier.h"
 
 // Util functions
 float
@@ -31,6 +32,7 @@ float	NowPrecip;		// inches of rain per month
 float	NowTemp;		// temperature this month
 float	NowHeight;		// rye grass height in inches
 int	NowNumRabbits;		// number of rabbits in the current population
+Barrier barrier = Barrier();
 
 
 // Constants
@@ -63,9 +65,9 @@ void Rabbits()
 
         if (nextNumRabbits < 0)
             nextNumRabbits = 0;
-        
+
         // DoneComputing barrier;
-        WaitBarrier( );
+        barrier.WaitBarrier( );
     }
 }
 
@@ -82,7 +84,7 @@ void RyeGrass()
         nextHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH;
 
         // DoneComputing barrier;
-        WaitBarrier( );
+        barrier.WaitBarrier( );
     }
 }
 
@@ -91,7 +93,7 @@ void Watcher()
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
         // DoneComputing barrier;
-        WaitBarrier( );
+        barrier.WaitBarrier( );
     }
 }
 
@@ -100,7 +102,7 @@ void MyAgent()
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
         // DoneComputing barrier;
-        WaitBarrier( );
+        barrier.WaitBarrier();
     }
 }
 
@@ -117,6 +119,11 @@ int main( int argc, char *argv[ ] )
     NowYear  = START_YEAR;
     NowNumRabbits = 1;
     NowHeight =  5.;
+
+    // Setup the barrier
+
+    omp_set_num_threads( 3 );	// or 4
+    barrier.InitBarrier( 3 );		// or 4
 
     // Calculate the curent environmental parameters
     float ang = (  30.*(float)NowMonth + 15.  ) * ( M_PI / 180. );
