@@ -121,8 +121,11 @@ void Watcher()
 
 #ifdef CSV
         int totalMonths = ((NowYear - START_YEAR) * 12) + NowMonth;
+        float heightCm = NowHeight * 2.54;
+        float precipCm = NowPrecip * 2.54;
+        float tempC = (5./9.) * (NowTemp - 32);
         fprintf(stderr, "%4d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
-                totalMonths, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
+                totalMonths, tempC, precipCm, heightCm, NowNumRabbits);
         //fprintf(stderr, "%4d , %2d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
         //        NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #else
