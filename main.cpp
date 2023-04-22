@@ -51,7 +51,7 @@ const float AVG_PRECIP_PER_MONTH =	       12.0;	// average
 const float AMP_PRECIP_PER_MONTH =		4.0;	// plus or minus
 const float RANDOM_PRECIP =			2.0;	// plus or minus noise
 
-const float INVASIVE_PLANT_GROWS_PER_MONTH =    40.0;
+const float INVASIVE_PLANT_GROWS_PER_MONTH =    20.0;
 
 const float AVG_TEMP =				60.0;	// average
 const float AMP_TEMP =				20.0;	// plus or minus
