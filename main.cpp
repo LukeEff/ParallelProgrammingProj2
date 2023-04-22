@@ -176,8 +176,7 @@ void MyAgent()
     {
         float nextInvasiveHeight = NowInvasiveHeight;
 
-        // Assume invasive plant it has the same temp and precip factor
-        float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP ) / 10.  )   );
+        float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP + 20. ) / 10.  )   );
         float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
 
         // Assumes rabbits do not have preference between types of consumable plant
