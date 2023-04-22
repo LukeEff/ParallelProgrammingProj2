@@ -1,4 +1,4 @@
-Month,Temp C,Precipitation cm,Ryegrass Height cm,Invasive Plant Height cm,Num Rabbits
+Month,Temp C,Precipitation cm,Ryegrass Height cm,Bermudagrass Height cm,Num Rabbits
    0 ,   1.96 , 28.17 ,  10.28 ,  38.23 ,   2
    1 ,   6.40 , 36.80 ,  12.55 ,  79.00 ,   3
    2 ,   7.88 , 45.30 ,  18.00 , 102.36 ,   4

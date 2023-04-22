@@ -36,7 +36,7 @@ float	NowTemp;		// temperature this month
 float	NowHeight;		// rye grass height in inches
 int	NowNumRabbits;		// number of rabbits in the current population
 
-float NowInvasiveHeight; // invasive grass height in inches
+float NowBermudaHeight; // bermuda grass height in inches
 
 
 
@@ -51,7 +51,7 @@ const float AVG_PRECIP_PER_MONTH =	       12.0;	// average
 const float AMP_PRECIP_PER_MONTH =		4.0;	// plus or minus
 const float RANDOM_PRECIP =			2.0;	// plus or minus noise
 
-const float INVASIVE_PLANT_GROWS_PER_MONTH =    20.0;
+const float BERMUDAGRASS_GROWS_PER_MONTH =    20.0;
 
 const float AVG_TEMP =				60.0;	// average
 const float AMP_TEMP =				20.0;	// plus or minus
@@ -67,7 +67,7 @@ void Rabbits()
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
         int nextNumRabbits = NowNumRabbits;
-        int carryingCapacity = (int) (NowHeight + NowInvasiveHeight);
+        int carryingCapacity = (int) (NowHeight + NowBermudaHeight);
         if (nextNumRabbits < carryingCapacity)
             nextNumRabbits++;
         else if (nextNumRabbits > carryingCapacity)
@@ -99,7 +99,7 @@ void RyeGrass()
         float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
 
         // Assumes rabbits do not have preference between types of consumable plant
-        float totalHeight = NowHeight + NowInvasiveHeight;
+        float totalHeight = NowHeight + NowBermudaHeight;
         float percentageEatenByRabbits = NowHeight / totalHeight;
         if (isnan(percentageEatenByRabbits)) percentageEatenByRabbits = 0.;
 
@@ -134,16 +134,16 @@ void Watcher()
 #ifdef CSV
         int totalMonths = ((NowYear - START_YEAR) * 12) + NowMonth;
         float heightCm = NowHeight * 2.54;
-        float invasiveHeightCm = NowInvasiveHeight * 2.54;
+        float bermudaHeightCm = NowBermudaHeight * 2.54;
         float precipCm = NowPrecip * 2.54;
         float tempC = (5./9.) * (NowTemp - 32);
         fprintf(stderr, "%4d , %6.2lf , %5.2lf , %6.2lf , %6.2lf , %3d\n",
-                totalMonths, tempC, precipCm, heightCm, invasiveHeightCm, NowNumRabbits);
+                totalMonths, tempC, precipCm, heightCm, bermudaHeightCm, NowNumRabbits);
         //fprintf(stderr, "%4d , %2d , %6.2lf , %5.2lf ,  %6.2lf , %3d\n",
         //        NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowNumRabbits);
 #else
-        fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Ryegrass Height in: %6.2lf ; Invasive Plant Height in: %6.2lf ; Rabbits: %3d\n",
-                NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowInvasiveHeight, NowNumRabbits);
+        fprintf(stderr, "Year: %4d ; Month: %2d ; Temp F: %6.2lf ; Precipitation in: %5.2lf ; Ryegrass Height in: %6.2lf ; Bermudagrass Height in: %6.2lf ; Rabbits: %3d\n",
+                NowYear, NowMonth, NowTemp, NowPrecip, NowHeight, NowBermudaHeight, NowNumRabbits);
 #endif
 
         NowMonth++;
@@ -174,24 +174,24 @@ void MyAgent()
 {
     while (NowYear < START_YEAR + TRIAL_DURATION_YEARS)
     {
-        float nextInvasiveHeight = NowInvasiveHeight;
+        float nextBermudaHeight = NowBermudaHeight;
 
         float tempFactor = exp(   -Sqr(  ( NowTemp - MIDTEMP + 20. ) / 10.  )   );
         float precipFactor = exp(   -Sqr(  ( NowPrecip - MIDPRECIP ) / 10.  )   );
 
         // Assumes rabbits do not have preference between types of consumable plant
-        float totalHeight = NowHeight + NowInvasiveHeight;
-        float percentageEatenByRabbits = NowInvasiveHeight / totalHeight;
+        float totalHeight = NowHeight + NowBermudaHeight;
+        float percentageEatenByRabbits = NowBermudaHeight / totalHeight;
         if (isnan(percentageEatenByRabbits)) percentageEatenByRabbits = 0;
 
-        nextInvasiveHeight += tempFactor * precipFactor * INVASIVE_PLANT_GROWS_PER_MONTH;
-        nextInvasiveHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH * percentageEatenByRabbits;
+        nextBermudaHeight += tempFactor * precipFactor * BERMUDAGRASS_GROWS_PER_MONTH;
+        nextBermudaHeight -= (float) NowNumRabbits * ONE_RABBITS_EATS_PER_MONTH * percentageEatenByRabbits;
 
-        if( nextInvasiveHeight < 0. ) nextInvasiveHeight = 0.;
+        if( nextBermudaHeight < 0. ) nextBermudaHeight = 0.;
         // DoneComputing barrier:
         barrier.WaitBarrier();
 
-        NowInvasiveHeight = nextInvasiveHeight;
+        NowBermudaHeight = nextBermudaHeight;
         // DoneAssigning barrier:
         barrier.WaitBarrier();
 
@@ -209,7 +209,7 @@ int main( int argc, char *argv[ ] )
     return 1;
 #endif
 #ifdef CSV
-    fprintf( stderr, "Month,Temp C,Precipitation cm,Ryegrass Height cm,Invasive Plant Height cm,Num Rabbits\n");
+    fprintf( stderr, "Month,Temp C,Precipitation cm,Ryegrass Height cm,Bermudagrass Height cm,Num Rabbits\n");
 #endif
     // Setup the now global variables
     NowMonth =    0;
